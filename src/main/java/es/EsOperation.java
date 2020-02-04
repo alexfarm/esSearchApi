@@ -5,9 +5,10 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 
 /**
- * Created by alex on 2020/1/28.
+ * Created by alex on 2020/2/4.
  */
 public class EsOperation {
+
 
     public RestHighLevelClient getEsOperation() {
         RestHighLevelClient client = new RestHighLevelClient(

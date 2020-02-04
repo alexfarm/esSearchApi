@@ -6,7 +6,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import java.util.Collection;
 
 /**
- * Created by alex on 2020/1/31.
+ * Created by alex on 2020/2/4.
  */
 public class ESSimpleExpression {
 

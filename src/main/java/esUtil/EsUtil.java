@@ -1,4 +1,4 @@
-package util;
+package esUtil;
 
 import es.EsOperation;
 import org.elasticsearch.action.get.GetRequest;
@@ -12,9 +12,10 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 /**
- * Created by alex on 2020/1/28.
+ * Created by alex on 2020/2/4.
  */
 public class EsUtil {
+
     private static RestHighLevelClient client;
 
     public EsUtil() {
