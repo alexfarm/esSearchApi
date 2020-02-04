@@ -5,7 +5,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import java.util.List;
 
 /**
- * Created by alex on 2020/1/30.
+ * Created by alex on 2020/2/4.
  */
 public interface ESCriterion {
     public enum Operator {
