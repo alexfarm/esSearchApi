@@ -9,6 +9,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.WrapperQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 /**
@@ -40,6 +41,24 @@ public class EsUtil {
                 .must(QueryBuilders.matchQuery("text", text));
         searchSourceBuilder.query(queryBuilder);
 
+        SearchResponse searchResponse = client.search(searchRequest,RequestOptions.DEFAULT);
+        return searchResponse.toString();
+    }
+
+    /**
+     * ex:{"bool":{"must":[{"match":{"text":"刷卡"}}],"must_not":[],"should":[]}}
+     * @param text
+     * @return
+     * @throws Exception
+     */
+    public static String dslQuery(String text) throws Exception {
+        WrapperQueryBuilder wrapperQueryBuilder = QueryBuilders.wrapperQuery(text);
+        SearchRequest searchRequest = new SearchRequest("test");
+        searchRequest.types("_doc");
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(wrapperQueryBuilder);
+        searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = client.search(searchRequest,RequestOptions.DEFAULT);
         return searchResponse.toString();
     }
