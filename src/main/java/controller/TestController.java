@@ -18,4 +18,10 @@ public class TestController {
     public String test(String id) throws Exception {
         return esUtil.boolQuery("我");
     }
+
+    @RequestMapping(value = "/dslQuery",method = RequestMethod.GET)
+    @ResponseBody
+    public String dslQuery(String dsl) throws Exception {
+        return esUtil.dslQuery(dsl);
+    }
 }
