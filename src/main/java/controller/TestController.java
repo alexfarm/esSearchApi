@@ -1,8 +1,10 @@
 package controller;
 
+import es.ExpressionErrorListener;
 import esUtil.EsUtil;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ConsoleErrorListener;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -28,6 +30,7 @@ public class TestController {
         TestCLexer lexer = new TestCLexer(new ANTLRInputStream(text));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         TestCParser parser = new TestCParser(tokens);
+        parser.addErrorListener(ExpressionErrorListener.INSTANCE);
         TestCParser.ExpressionContext t = parser.expression();
         //获得语法树
         boolQueryBuilder.must(getAtomNode(t));
