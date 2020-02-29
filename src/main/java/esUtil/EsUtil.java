@@ -7,10 +7,13 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.WrapperQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+
+import java.util.List;
 
 /**
  * Created by alex on 2020/2/4.
@@ -32,16 +35,24 @@ public class EsUtil {
         return getResponse.toString();
     }
 
-    public static String boolQuery(String text) throws Exception {
+    public static String boolQuery(QueryBuilder queryBuilder) throws Exception {
         SearchRequest searchRequest = new SearchRequest("test");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchRequest.types("_doc");
         searchRequest.source(searchSourceBuilder);
-        QueryBuilder queryBuilder = QueryBuilders.boolQuery()
-                .must(QueryBuilders.matchQuery("text", text));
         searchSourceBuilder.query(queryBuilder);
 
-        SearchResponse searchResponse = client.search(searchRequest,RequestOptions.DEFAULT);
+        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+        return searchResponse.toString();
+    }
+
+    public static String boolQueryList(BoolQueryBuilder builder) throws Exception {
+        SearchRequest searchRequest = new SearchRequest("test");
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchRequest.types("_doc");
+        searchRequest.source(searchSourceBuilder);
+        searchSourceBuilder.query(builder);
+        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
         return searchResponse.toString();
     }
 
@@ -61,5 +72,10 @@ public class EsUtil {
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = client.search(searchRequest,RequestOptions.DEFAULT);
         return searchResponse.toString();
+    }
+
+    public static QueryBuilder addMustQuery(String key, String value) throws Exception {
+        QueryBuilder queryBuilder = QueryBuilders.termQuery(key, value);
+        return queryBuilder;
     }
 }
