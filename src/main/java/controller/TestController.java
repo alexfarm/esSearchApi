@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.SpanNearQueryBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +37,19 @@ public class TestController {
         boolQueryBuilder.must(getAtomNode(t));
         //进行搜索
         return esUtil.boolQueryList(boolQueryBuilder);
+    }
+
+    @RequestMapping(value = "/testNear", method = RequestMethod.GET)
+    @ResponseBody
+    public String testNear(String text) throws Exception {
+        //QueryBuilders.spanNearQuery()
+        SpanNearQueryBuilder span = QueryBuilders.spanNearQuery(QueryBuilders.spanTermQuery("text", "教育部"), 10)
+                .addClause(QueryBuilders.spanTermQuery("text", text)).inOrder(false);
+        //获得语法树
+        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(span);
+        //进行搜索
+        String ret =  esUtil.boolQueryList(queryBuilder);
+        return ret;
     }
 
     private static QueryBuilder getAtomNode(ParseTree node) {
